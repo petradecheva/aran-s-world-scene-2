@@ -1,30 +1,32 @@
 class Main extends Phaser.Scene {
-    private background1: Phaser.GameObjects.Image;
-    private background2: Phaser.GameObjects.Image;
-    private background3: Phaser.GameObjects.Image;
-
     private map: Phaser.Tilemaps.Tilemap;
-    private worldTileset: Phaser.Tilemaps.Tileset;
-    private treesTileset: Phaser.Tilemaps.Tileset;
-
     constructor(){
         super("main");
     }
 
     create(){
-        // this.background1 = this.add.image(500,100,"background1");
-        // this.background2 = this.add.image(100,100,"background2");
-        // this.background3 = this.add.image(100,100,"background3");
-        // this.add.existing(this.background1);
-        // this.add.existing(this.background2);
-        // this.add.existing(this.background3);
-        // console.log("baCKGROUND1");
+        this.map = this.make.tilemap({key: "level2", tileWidth: 32, tileHeight: 32});
+        let background1: Phaser.GameObjects.Image = this.add.image(0,0,"background1");
+        background1.setOrigin(0);
+        background1.setScale(2.5);
+        this.add.existing(background1);
+        let background2: Phaser.GameObjects.Image = this.add.image(0,0,"background2");
+        background2.setOrigin(0);
+        background2.setScale(2.5);
+        this.add.existing(background2);
+        let worldTileset: Phaser.Tilemaps.Tileset = this.map.addTilesetImage("rockyworld_tileset","tiles1");
+        let treesTileset: Phaser.Tilemaps.Tileset = this.map.addTilesetImage("rockytrees_tileset", "tiles2");
 
-        this.map = this.make.tilemap({ key: "map" });
-        this.worldTileset = this.map.addTilesetImage("worldtiles","world");
-        this.treesTileset = this.map.addTilesetImage("treestiles","trees");
-        let layer = this.map.createStaticLayer(4,"worldtiles",0,0);
-        this.add.existing(layer);
+        let TreeLayer1: Phaser.Tilemaps.StaticTilemapLayer = this.map.createStaticLayer("Tree Layer", worldTileset).setDepth(0);
+        let TileLayer: Phaser.Tilemaps.StaticTilemapLayer = this.map.createStaticLayer("Tile Layer 1",worldTileset).setDepth(1);
+        let TreeLayer2: Phaser.Tilemaps.StaticTilemapLayer = this.map.createStaticLayer("Tree Layer 2", [treesTileset, worldTileset]).setDepth(2);
+        let MainLayer: Phaser.Tilemaps.StaticTilemapLayer = this.map.createStaticLayer("Main Layer", worldTileset).setDepth(3);
+
+        TreeLayer1.setScale(0.7);
+        TileLayer.setScale(0.7);
+        TreeLayer2.setScale(0.7);
+        MainLayer.setScale(0.7);
+
         
     }
 
